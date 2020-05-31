@@ -10,7 +10,7 @@ var rightImage = document.getElementById("right");
 var imageSection = document.getElementById("section");
 
 var totalClicks = 0;
-
+var voteRounds = 25;
 Products.all = [];
 
 function Products(name) {
@@ -18,14 +18,12 @@ function Products(name) {
     this.productname = name;
     this.imgpath = `assets/${name}`;
     this.clicks = 0;
-    this.view =0;
+    this.view = 0;
 
     Products.all.push(this);
 }
 
 for (var i = 0; i < inputfolder.length; i++) {
-    // var totla= inputfolder[i].name
-
 
     new Products(inputfolder[i].name)
 
@@ -33,48 +31,35 @@ for (var i = 0; i < inputfolder.length; i++) {
 
 var left, center, right;
 
-var images=[];
+var images = [];
 
 console.log(images);
 
 function renderImages() {
 
 
-    left = Products.all[randomNum(0, inputfolder.length - 1)];
-
-    images.push(left.productname);
-
-    for (var i =0; i < images.length;i++){
-
-        if( left.name === images[i].productname){
-            console.log(images[i].productname);
-            left.view++;
-
-        }
-    }
-     
+    left = checkRep();
+    // images.push(left.productname);
     leftImage.src = left.imgpath;
 
-    center = Products.all[randomNum(0, inputfolder.length - 1)];
+    center = checkRep();
     images.push(center.productname);
 
     centerImage.src = center.imgpath;
 
-    right = Products.all[randomNum(0, inputfolder.length - 1)];
+    right = checkRep();
     images.push(right.productname);
     rightImage.src = right.imgpath;
 }
 
-function checkRep(){
-    
-}
+
 renderImages();
 
 
 
 imageSection.addEventListener('click', function (event) {
 
-    if (totalClicks < 25) {
+    if (totalClicks < voteRounds) {
 
         if (event.target.id !== 'section') {
 
@@ -114,7 +99,12 @@ function finalResult() {
 
 }
 
-console.log(totalClicks);
+
+function checkRep() {
+
+    images.push(this.productname);
+    return Products.all[randomNum(0, inputfolder.length - 1)];
+}
 
 function randomNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
