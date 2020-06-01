@@ -1,8 +1,6 @@
 'use static'
 
 var inputfolder = document.getElementById("file-selector").files;
-// console.log(inputfolder);
-
 
 var leftImage = document.getElementById("left");
 var centerImage = document.getElementById("center");
@@ -10,11 +8,9 @@ var rightImage = document.getElementById("right");
 var imageSection = document.getElementById("section");
 
 var totalClicks = 0;
-var voteRounds = 5;
+var voteRounds = 25;
 Products.all = [];
-
-
-// console.log('allproducts', Products.all);
+var images1 = [];
 
 function Products(name) {
 
@@ -25,18 +21,27 @@ function Products(name) {
 
     Products.all.push(this);
 
-
 }
 
 for (var i = 0; i < inputfolder.length; i++) {
 
     new Products(inputfolder[i].name)
-
 }
 
 var left, center, right;
 
-
+function checkIfArrayIsUnique(myArray) {
+    for (var i = 0; i < myArray.length; i++) {
+        for (var j = 0; j < myArray.length; j++) {
+            if (i != j) {
+                if (myArray[i] == myArray[j]) {
+                    return false; // means there are duplicate values
+                }
+            }
+        }
+    }
+    return true; // means there are no duplicate values.
+}
 
 function renderImages() {
 
@@ -44,20 +49,35 @@ function renderImages() {
     center = randGenerator();
     right = randGenerator();
 
-    console.log(left);
 
+    if (left === center || center === right || right === left) {
 
-    if (left === center || center === right || right == left) {
         renderImages();
+
+    } else {
+        // images1 = [];
+        images1.push(left, center, right);
+        var isdub = checkIfArrayIsUnique(images1);
+        console.log(isdub);
+        console.log(images1);
+
+        if (images1.length > 6) {
+
+            for (var i = 0; i < 3; i++) {
+                images1.shift();
+                if (isdub == true) {
+                    renderImages();
+                }
+            }
+        }
+
     }
 
     leftImage.src = left.imgpath;
     left.view++
-    // console.log('left value',left);
 
     centerImage.src = center.imgpath;
     center.view++
-    // console.log('center value',center);
 
 
     rightImage.src = right.imgpath;
@@ -111,9 +131,7 @@ function finalResult() {
         ulE1.append(li);
 
     }
-
     chart();
-
 }
 
 
@@ -141,11 +159,7 @@ function chart() {
         productClicks.push(Products.all[i].clicks);
         productViews.push(Products.all[i].view);
 
-        // console.log("prod all",Products.all[i].productname);
-        console.log("productClicks", productClicks);
-
     }
-    // console.log("productClicks",productClicks);
 
     var myChart = new Chart(ctx, {
         type: 'bar',
