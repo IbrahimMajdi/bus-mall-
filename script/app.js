@@ -12,7 +12,6 @@ var imageSection = document.getElementById("section");
 var totalClicks = 0;
 var voteRounds = 5;
 Products.all = [];
-var images = [];
 
 
 // console.log('allproducts', Products.all);
@@ -25,6 +24,7 @@ function Products(name) {
     this.view = 0;
 
     Products.all.push(this);
+
 
 }
 
@@ -112,6 +112,8 @@ function finalResult() {
 
     }
 
+    chart();
+
 }
 
 
@@ -124,4 +126,53 @@ function randGenerator() {
 
 function randomNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function chart() {
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+
+    var productsLables = [];
+    var productClicks = [];
+    var productViews = [];
+
+    for (var i = 0; i < Products.all.length; i++) {
+        productsLables.push(Products.all[i].productname);
+        productClicks.push(Products.all[i].clicks);
+        productViews.push(Products.all[i].view);
+
+        // console.log("prod all",Products.all[i].productname);
+        console.log("productClicks", productClicks);
+
+    }
+    // console.log("productClicks",productClicks);
+
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: productsLables,
+            datasets: [{
+                label: ['number of Votes'],
+                data: productClicks,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }, {
+                label: 'number of Views',
+                data: productViews,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
 }
