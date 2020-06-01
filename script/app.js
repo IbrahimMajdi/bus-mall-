@@ -10,7 +10,7 @@ var rightImage = document.getElementById("right");
 var imageSection = document.getElementById("section");
 
 var totalClicks = 0;
-var voteRounds = 25;
+var voteRounds = 5;
 Products.all = [];
 var images = [];
 
@@ -68,7 +68,9 @@ function renderImages() {
 
 renderImages();
 
-imageSection.addEventListener('click', function (event) {
+imageSection.addEventListener('click', handler);
+
+function handler(event) {
     // event.preventDefault();
     if (totalClicks < voteRounds) {
 
@@ -91,12 +93,13 @@ imageSection.addEventListener('click', function (event) {
             renderImages();
         }
 
-    } else {
+    } else if (totalClicks === voteRounds) {
+        imageSection.removeEventListener('click', handler);
         finalResult();
     }
 
 
-})
+}
 
 function finalResult() {
 
