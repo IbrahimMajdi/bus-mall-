@@ -1,7 +1,7 @@
 'use static'
 
 var inputfolder = document.getElementById("file-selector").files;
-console.log(inputfolder);
+// console.log(inputfolder);
 
 
 var leftImage = document.getElementById("left");
@@ -12,15 +12,20 @@ var imageSection = document.getElementById("section");
 var totalClicks = 0;
 var voteRounds = 25;
 Products.all = [];
+var images = [];
+
+
+// console.log('allproducts', Products.all);
 
 function Products(name) {
 
-    this.productname = name;
+    this.productname = name.split(".")[0];
     this.imgpath = `assets/${name}`;
     this.clicks = 0;
     this.view = 0;
 
     Products.all.push(this);
+
 }
 
 for (var i = 0; i < inputfolder.length; i++) {
@@ -31,34 +36,40 @@ for (var i = 0; i < inputfolder.length; i++) {
 
 var left, center, right;
 
-var images = [];
 
-console.log(images);
 
 function renderImages() {
 
+    left = randGenerator();
+    center = randGenerator();
+    right = randGenerator();
 
-    left = checkRep();
-    // images.push(left.productname);
+    console.log(left);
+
+
+    if (left === center || center === right || right == left) {
+        renderImages();
+    }
+
     leftImage.src = left.imgpath;
-
-    center = checkRep();
-    images.push(center.productname);
+    left.view++
+    // console.log('left value',left);
 
     centerImage.src = center.imgpath;
+    center.view++
+    // console.log('center value',center);
 
-    right = checkRep();
-    images.push(right.productname);
+
     rightImage.src = right.imgpath;
+    right.view++
+
 }
 
 
 renderImages();
 
-
-
 imageSection.addEventListener('click', function (event) {
-
+    // event.preventDefault();
     if (totalClicks < voteRounds) {
 
         if (event.target.id !== 'section') {
@@ -67,6 +78,7 @@ imageSection.addEventListener('click', function (event) {
 
             if (event.target.id === 'left') {
                 left.clicks++;
+
 
             }
             if (event.target.id === 'center') {
@@ -92,7 +104,7 @@ function finalResult() {
 
     for (var i = 0; i < inputfolder.length; i++) {
         var li = document.createElement('li');
-        li.textContent = `${Products.all[i].productname} has ${Products.all[i].clicks} clicks and ${Products.all[i].view} views`;
+        li.textContent = `${Products.all[i].productname} had ${Products.all[i].clicks} votes and was shown ${Products.all[i].view} times`;
         ulE1.append(li);
 
     }
@@ -100,9 +112,10 @@ function finalResult() {
 }
 
 
-function checkRep() {
 
-    images.push(this.productname);
+
+
+function randGenerator() {
     return Products.all[randomNum(0, inputfolder.length - 1)];
 }
 
