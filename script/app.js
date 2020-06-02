@@ -8,9 +8,10 @@ var rightImage = document.getElementById("right");
 var imageSection = document.getElementById("section");
 
 var totalClicks = 0;
-var voteRounds = 10;
+var voteRounds = 5;
 Products.all = [];
 var imagesSet = [];
+
 
 
 function Products(name) {
@@ -23,6 +24,8 @@ function Products(name) {
     Products.all.push(this);
 
 }
+
+
 
 for (var i = 0; i < inputfolder.length; i++) {
 
@@ -53,22 +56,18 @@ function renderImages() {
 
     imagesSet.push(left, center, right);
 
-    
+
     leftImage.src = left.imgpath;
     leftImage.title = left.productname;
-
-
     left.view++
 
     centerImage.src = center.imgpath;
     centerImage.title = center.productname;
-
     center.view++
 
 
     rightImage.src = right.imgpath;
     rightImage.title = right.productname;
-
     right.view++
 }
 
@@ -77,8 +76,21 @@ renderImages();
 
 imageSection.addEventListener('click', handler);
 
+function storeProducts() {
+    var data = JSON.stringify(Products.all);
+    localStorage.setItem('data', data);
+}
+
+function getProducts() {
+
+    var data = localStorage.getItem('data');
+    Products.all = JSON.parse(data)
+    console.log(Products.all);
+
+}
+
 function handler(event) {
-    // event.preventDefault();
+    event.preventDefault();
     if (totalClicks < voteRounds) {
 
 
@@ -97,9 +109,11 @@ function handler(event) {
             if (event.target.id === 'right') {
                 right.clicks++;
             }
-
+            
+            storeProducts();
             renderImages();
         }
+
 
 
     } else if (totalClicks === voteRounds) {
@@ -109,6 +123,8 @@ function handler(event) {
 
 
 }
+
+
 
 function finalResult() {
 
@@ -123,9 +139,6 @@ function finalResult() {
 
     chart();
 }
-
-
-
 
 
 function randGenerator() {
@@ -145,6 +158,7 @@ function chart() {
     var productViews = [];
 
     for (var i = 0; i < Products.all.length; i++) {
+
         productsLables.push(Products.all[i].productname);
         productClicks.push(Products.all[i].clicks);
         productViews.push(Products.all[i].view);
@@ -180,3 +194,4 @@ function chart() {
         }
     });
 }
+getProducts();
