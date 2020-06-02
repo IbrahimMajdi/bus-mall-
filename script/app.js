@@ -10,7 +10,9 @@ var imageSection = document.getElementById("section");
 var totalClicks = 0;
 var voteRounds = 25;
 Products.all = [];
-var images1 = [];
+var imagesSet1 = [];
+var imagesSet2 = [];
+
 
 function Products(name) {
 
@@ -30,18 +32,18 @@ for (var i = 0; i < inputfolder.length; i++) {
 
 var left, center, right;
 
-function checkIfArrayIsUnique(myArray) {
-    for (var i = 0; i < myArray.length; i++) {
-        for (var j = 0; j < myArray.length; j++) {
-            if (i != j) {
-                if (myArray[i] == myArray[j]) {
-                    return false; // means there are duplicate values
-                }
-            }
-        }
-    }
-    return true; // means there are no duplicate values.
-}
+// function checkIfArrayIsUnique(myArray) {
+//     for (var i = 0; i < myArray.length; i++) {
+//         for (var j = 0; j < myArray.length; j++) {
+//             if (i != j) {
+//                 if (myArray[i] == myArray[j]) {
+//                     return false; // means there are duplicate values
+//                 }
+//             }
+//         }
+//     }
+//     return true; // means there are no duplicate values.
+// }
 
 function renderImages() {
 
@@ -55,23 +57,26 @@ function renderImages() {
         renderImages();
 
     } else {
-        // images1 = [];
-        images1.push(left, center, right);
-        var isdub = checkIfArrayIsUnique(images1);
-        console.log(isdub);
-        console.log(images1);
 
-        if (images1.length > 6) {
-
-            for (var i = 0; i < 3; i++) {
-                images1.shift();
-                if (isdub == true) {
-                    renderImages();
-                }
-            }
-        }
+        imagesSet1.push(left, center, right);
 
     }
+
+
+
+    console.log("after set1", imagesSet1);
+    console.log("after set2", imagesSet2);
+
+    // for (var i = 0; i < imagesSet2.length; i++) {
+    //     // imagesSet1[i] = randGenerator();
+    //     if (imagesSet2[i] === center || imagesSet2[i] === right || imagesSet2[i] === left) {
+    //         // imagesSet1[i] = randGenerator();
+    //         console.log("imagesSet2[i]", imagesSet2[i]);
+
+    //     }
+
+
+    // }
 
     leftImage.src = left.imgpath;
     left.view++
@@ -82,8 +87,11 @@ function renderImages() {
 
     rightImage.src = right.imgpath;
     right.view++
-
 }
+
+
+imagesSet2 = imagesSet1;
+console.log("after function",imagesSet2);
 
 
 renderImages();
@@ -100,12 +108,12 @@ function handler(event) {
 
             if (event.target.id === 'left') {
                 left.clicks++;
-
-
             }
+
             if (event.target.id === 'center') {
                 center.clicks++;
             }
+
             if (event.target.id === 'right') {
                 right.clicks++;
             }
@@ -131,6 +139,7 @@ function finalResult() {
         ulE1.append(li);
 
     }
+
     chart();
 }
 
