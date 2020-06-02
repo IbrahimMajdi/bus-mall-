@@ -8,7 +8,7 @@ var rightImage = document.getElementById("right");
 var imageSection = document.getElementById("section");
 
 var totalClicks = 0;
-var voteRounds = 25;
+var voteRounds = 10;
 Products.all = [];
 var imagesSet = [];
 
@@ -41,7 +41,6 @@ function renderImages() {
     if (left === center || center === right || right === left || imagesSet.includes(left) || imagesSet.includes(center) || imagesSet.includes(right)) {
 
         renderImages();
-        console.log("if imagesSet", imagesSet);
 
         imagesSet = [];
 
