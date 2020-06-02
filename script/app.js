@@ -10,8 +10,7 @@ var imageSection = document.getElementById("section");
 var totalClicks = 0;
 var voteRounds = 25;
 Products.all = [];
-var imagesSet1 = [];
-var imagesSet2 = [];
+var imagesSet = [];
 
 
 function Products(name) {
@@ -32,19 +31,6 @@ for (var i = 0; i < inputfolder.length; i++) {
 
 var left, center, right;
 
-// function checkIfArrayIsUnique(myArray) {
-//     for (var i = 0; i < myArray.length; i++) {
-//         for (var j = 0; j < myArray.length; j++) {
-//             if (i != j) {
-//                 if (myArray[i] == myArray[j]) {
-//                     return false; // means there are duplicate values
-//                 }
-//             }
-//         }
-//     }
-//     return true; // means there are no duplicate values.
-// }
-
 function renderImages() {
 
     left = randGenerator();
@@ -52,31 +38,19 @@ function renderImages() {
     right = randGenerator();
 
 
-    if (left === center || center === right || right === left) {
+    if (left === center || center === right || right === left || imagesSet.includes(left) || imagesSet.includes(center) || imagesSet.includes(right)) {
 
         renderImages();
+        imagesSet = [];
 
     } else {
 
-        imagesSet1.push(left, center, right);
-
+        imagesSet = [];
+        console.log("imagesSet", imagesSet);
     }
 
 
-
-    console.log("after set1", imagesSet1);
-    console.log("after set2", imagesSet2);
-
-    // for (var i = 0; i < imagesSet2.length; i++) {
-    //     // imagesSet1[i] = randGenerator();
-    //     if (imagesSet2[i] === center || imagesSet2[i] === right || imagesSet2[i] === left) {
-    //         // imagesSet1[i] = randGenerator();
-    //         console.log("imagesSet2[i]", imagesSet2[i]);
-
-    //     }
-
-
-    // }
+    imagesSet.push(left, center, right);
 
     leftImage.src = left.imgpath;
     left.view++
@@ -90,8 +64,7 @@ function renderImages() {
 }
 
 
-imagesSet2 = imagesSet1;
-console.log("after function",imagesSet2);
+;
 
 
 renderImages();
@@ -101,6 +74,7 @@ imageSection.addEventListener('click', handler);
 function handler(event) {
     // event.preventDefault();
     if (totalClicks < voteRounds) {
+
 
         if (event.target.id !== 'section') {
 
@@ -120,6 +94,7 @@ function handler(event) {
 
             renderImages();
         }
+
 
     } else if (totalClicks === voteRounds) {
         imageSection.removeEventListener('click', handler);
