@@ -41,30 +41,37 @@ function renderImages() {
     if (left === center || center === right || right === left || imagesSet.includes(left) || imagesSet.includes(center) || imagesSet.includes(right)) {
 
         renderImages();
+        console.log("if imagesSet", imagesSet);
+
         imagesSet = [];
 
     } else {
 
         imagesSet = [];
-        console.log("imagesSet", imagesSet);
+        console.log("else imagesSet", imagesSet);
     }
 
 
     imagesSet.push(left, center, right);
 
+    
     leftImage.src = left.imgpath;
+    leftImage.title = left.productname;
+
+
     left.view++
 
     centerImage.src = center.imgpath;
+    centerImage.title = center.productname;
+
     center.view++
 
 
     rightImage.src = right.imgpath;
+    rightImage.title = right.productname;
+
     right.view++
 }
-
-
-;
 
 
 renderImages();
