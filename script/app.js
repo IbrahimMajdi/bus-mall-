@@ -8,7 +8,7 @@ var rightImage = document.getElementById("right");
 var imageSection = document.getElementById("section");
 
 var totalClicks = 0;
-var voteRounds = 5;
+var voteRounds = 2;
 Products.all = [];
 var imagesSet = [];
 
@@ -44,16 +44,15 @@ function renderImages() {
     if (left === center || center === right || right === left || imagesSet.includes(left) || imagesSet.includes(center) || imagesSet.includes(right)) {
 
         renderImages();
-
         imagesSet = [];
 
     } else {
 
         imagesSet = [];
-        console.log("else imagesSet", imagesSet);
+        // console.log("else imagesSet", imagesSet);
     }
 
-
+    
     imagesSet.push(left, center, right);
 
 
@@ -76,22 +75,27 @@ renderImages();
 
 imageSection.addEventListener('click', handler);
 
-function storeProducts() {
-    var data = JSON.stringify(Products.all);
+function SetProducts() {
+
+    var data = JSON.stringify("json", Products.all);
     localStorage.setItem('data', data);
+    console.log(localStorage.setItem('data', data));
+
 }
 
 function getProducts() {
 
     var data = localStorage.getItem('data');
     Products.all = JSON.parse(data)
-    console.log(Products.all);
+    console.log("parsedData", Products.all);
 
 }
 
 function handler(event) {
+
     event.preventDefault();
-    if (totalClicks < voteRounds) {
+
+    if (totalClicks < voteRounds - 1) {
 
 
         if (event.target.id !== 'section') {
@@ -109,14 +113,14 @@ function handler(event) {
             if (event.target.id === 'right') {
                 right.clicks++;
             }
-            
-            storeProducts();
+
             renderImages();
+
         }
 
 
 
-    } else if (totalClicks === voteRounds) {
+    } else if (totalClicks === voteRounds - 1) {
         imageSection.removeEventListener('click', handler);
         finalResult();
     }
@@ -140,6 +144,7 @@ function finalResult() {
     chart();
 }
 
+// SetProducts();
 
 function randGenerator() {
     return Products.all[randomNum(0, inputfolder.length - 1)];
@@ -149,13 +154,15 @@ function randomNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+var productsLables = [];
+var productClicks = [];
+var productViews = [];
+
+
+
 function chart() {
 
     var ctx = document.getElementById('myChart').getContext('2d');
-
-    var productsLables = [];
-    var productClicks = [];
-    var productViews = [];
 
     for (var i = 0; i < Products.all.length; i++) {
 
@@ -164,7 +171,6 @@ function chart() {
         productViews.push(Products.all[i].view);
 
     }
-
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -194,4 +200,4 @@ function chart() {
         }
     });
 }
-getProducts();
+//  getProducts();
