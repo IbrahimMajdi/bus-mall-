@@ -8,7 +8,7 @@ var rightImage = document.getElementById("right");
 var imageSection = document.getElementById("section");
 
 var totalClicks = 0;
-var voteRounds = 2;
+var voteRounds = 25;
 Products.all = [];
 var imagesSet = [];
 
@@ -52,7 +52,7 @@ function renderImages() {
         // console.log("else imagesSet", imagesSet);
     }
 
-    
+
     imagesSet.push(left, center, right);
 
 
@@ -70,26 +70,11 @@ function renderImages() {
     right.view++
 }
 
-
 renderImages();
 
 imageSection.addEventListener('click', handler);
 
-function SetProducts() {
 
-    var data = JSON.stringify("json", Products.all);
-    localStorage.setItem('data', data);
-    console.log(localStorage.setItem('data', data));
-
-}
-
-function getProducts() {
-
-    var data = localStorage.getItem('data');
-    Products.all = JSON.parse(data)
-    console.log("parsedData", Products.all);
-
-}
 
 function handler(event) {
 
@@ -114,8 +99,8 @@ function handler(event) {
                 right.clicks++;
             }
 
+            SetProducts();
             renderImages();
-
         }
 
 
@@ -140,11 +125,10 @@ function finalResult() {
         ulE1.append(li);
 
     }
-
     chart();
 }
 
-// SetProducts();
+
 
 function randGenerator() {
     return Products.all[randomNum(0, inputfolder.length - 1)];
@@ -200,4 +184,19 @@ function chart() {
         }
     });
 }
-//  getProducts();
+
+function SetProducts() {
+
+    var data = JSON.stringify(Products.all);
+    localStorage.setItem('data', data);
+
+}
+
+function getProducts() {
+
+    var storedData = localStorage.getItem('data');
+    Products.all = JSON.parse(storedData)
+    console.log("parsedData", Products.all);
+    finalResult();
+}
+getProducts();
