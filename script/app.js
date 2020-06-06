@@ -195,8 +195,9 @@ function SetProducts() {
 function getProducts() {
 
     var storedData = localStorage.getItem('data');
-    Products.all = JSON.parse(storedData)
-    console.log("parsedData", Products.all);
+    if (storedData != null) {
+        Products.all = JSON.parse(storedData)
+    }
     finalResult();
 }
 getProducts();
